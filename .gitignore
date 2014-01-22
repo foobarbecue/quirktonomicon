@@ -1,0 +1,5 @@
+settings.py
+*.pyc
+*.sqlite3
+scraped_data
+
