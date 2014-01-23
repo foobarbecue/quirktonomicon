@@ -10,8 +10,8 @@ class Ideation(models.Model):
     description = models.TextField(blank=True, null=True)
     expires_at = models.DateTimeField(blank=True, null=True)
     features = models.TextField(blank=True, null=True)
-    id = models.IntegerField(blank=True, null=True)
-    idea_id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
+    idea_id = models.IntegerField()
     media = models.TextField(blank=True, null=True)
     not_chosen_at = models.DateTimeField(blank=True, null=True)
     patent_id = models.IntegerField(blank=True, null=True)
@@ -27,3 +27,13 @@ class Ideation(models.Model):
     user_id = models.IntegerField(blank=True, null=True)
     votes_count = models.IntegerField(blank=True, null=True)
 
+    def __str__(self):
+        self.title
+
+class VoteCount(models.Model):
+    expires_at = models.DateTimeField(blank=True, null=True)
+    idea_id = models.IntegerField()
+    votes_count = models.IntegerField(blank=True, null=True)
+    total_votes_needed = models.IntegerField(blank=True, null=True)
+    considered_at = models.DateTimeField(blank=True, null=True)
+    state = models.CharField(max_length=30)
