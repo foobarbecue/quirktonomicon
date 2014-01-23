@@ -23,7 +23,7 @@ def scrape_to_file(start=0,end=10000):
 def read_json(ideas_string):
     json.loads()
 
-def write_idea_to_db(idea):
+def write_idea_to_db(idea, accessed_at):
     # idea should be a dict containing one "ideation"
     idea_id = idea.pop('idea_id')
     _ , created = Ideation.objects.get_or_create(defaults=idea, idea_id=idea_id)
@@ -32,16 +32,15 @@ def write_idea_to_db(idea):
         vote_count_params  = ['votes_count',
                               'total_votes_needed',
                               'considered_at',
-                              'state',
-                              'expires_at']
+                              'state',]
         vote_count_par_dict = { key : idea[key] for key in vote_count_params }
         vote_count_par_dict.update({'idea_id':idea_id})
-        VoteCount.objects.create(**vote_count_par_dict)
+        VoteCount.objects.create(accessed_at = , **vote_count_par_dict)
     
 def ideas_api_to_db(**kwargs):
     ideas=get_ideas_from_api(**kwargs)
     for idea in ideas:
-        write_idea_to_db(idea)
+        write_idea_to_db(idea=idea, accessed_at = datetime.datetime.now())
         db.reset_queries()
 
 def scraped_file_to_db(filename):
@@ -50,8 +49,10 @@ def scraped_file_to_db(filename):
         with open(filename) as f:
             # Temporary solution. Should use actual json
             exec('ideas = ' + f.read())
+            # Get accessed 
             for idea in ideas:
-                write_idea_to_db(idea)
+                accessed_at = datetime.datetime.strptime(filename.split('.')[0], '%Y-%m-%d %H:%M:%S')
+                write_idea_to_db(idea, accessed_at = accessed_at)
                 try:
                     os.rename(basepath + '/' + filename, basepath + '/in_db/' + filename)
                 except OSError:

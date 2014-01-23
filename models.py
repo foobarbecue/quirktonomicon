@@ -31,7 +31,7 @@ class Ideation(models.Model):
         self.title
 
 class VoteCount(models.Model):
-    expires_at = models.DateTimeField(blank=True, null=True)
+    accessed_at = models.DateTimeField(blank=True, null=True)
     idea_id = models.IntegerField()
     votes_count = models.IntegerField(blank=True, null=True)
     total_votes_needed = models.IntegerField(blank=True, null=True)
