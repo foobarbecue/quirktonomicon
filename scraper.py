@@ -35,7 +35,7 @@ def write_idea_to_db(idea, accessed_at):
                               'state',]
         vote_count_par_dict = { key : idea[key] for key in vote_count_params }
         vote_count_par_dict.update({'idea_id':idea_id})
-        VoteCount.objects.create(accessed_at = , **vote_count_par_dict)
+        VoteCount.objects.create(accessed_at = accessed_at, **vote_count_par_dict)
     
 def ideas_api_to_db(**kwargs):
     ideas=get_ideas_from_api(**kwargs)
