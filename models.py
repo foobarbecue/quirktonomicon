@@ -28,7 +28,7 @@ class Ideation(models.Model):
     votes_count = models.IntegerField(blank=True, null=True)
 
     def __str__(self):
-        self.title
+        return self.title
 
 class VoteCount(models.Model):
     accessed_at = models.DateTimeField(blank=True, null=True)
