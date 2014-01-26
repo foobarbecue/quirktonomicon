@@ -7,13 +7,16 @@ def get_ideas_from_api(sort='newest',categories='all',start=0,end=50,per_request
     # Quirky website sends requests with limit=26 but changing the limit parameter
     # seems to have no effect.
     ideas=[]
-    for reqnum in range((end-start)/per_request):
-        offset=start+reqnum*per_request
-        params={'sort':sort,'offset':offset,'limit':per_request}
-        # 26 seems to be maximum for limit
-        print 'offset %s' % offset
-        data=requests.get('http://www.quirky.com/api/v2/ideations/filtered_ideations.json',params=params).json()['data']
-        ideas+=data['ideations']
+    try:
+        for reqnum in range((end-start)/per_request):
+            offset=start+reqnum*per_request
+            params={'sort':sort,'offset':offset,'limit':per_request}
+            # 26 seems to be maximum for limit
+            print 'offset %s' % offset
+            data=requests.get('http://www.quirky.com/api/v2/ideations/filtered_ideations.json',params=params).json()['data']
+            ideas+=data['ideations']
+    except:
+        print 'fail on reqnum ' + reqnum
     return ideas
 
 def scrape_to_file(start=0,end=10000):

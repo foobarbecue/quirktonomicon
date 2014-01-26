@@ -7,6 +7,6 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'quirktonomicon.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-
+    url(r'idea/(\d*)$', 'quirktonomicon.views.votes_plot'),
     url(r'^admin/', include(admin.site.urls)),
 )
