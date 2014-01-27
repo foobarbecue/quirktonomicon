@@ -29,7 +29,7 @@ def read_json(ideas_string):
 def write_idea_to_db(idea, accessed_at):
     # idea should be a dict containing one "ideation"
     idea_id = idea.pop('idea_id')
-    _ , created = Ideation.objects.get_or_create(defaults=idea, idea_id=idea_id)
+    idea, created = Ideation.objects.get_or_create(defaults=idea, idea_id=idea_id)
     if not created:
         # Already existed, so we don't need to re-save the description etc, instead we make a "vote count"
         vote_count_params  = ['votes_count',
@@ -39,6 +39,9 @@ def write_idea_to_db(idea, accessed_at):
         vote_count_par_dict = { key : idea[key] for key in vote_count_params }
         vote_count_par_dict.update({'idea_id':idea_id})
         VoteCount.objects.create(accessed_at = accessed_at, **vote_count_par_dict)
+        #Update the current vote count on the Ideation as well. This is redundant, a sort of cache.
+        idea.votes_count=vote_count_params['votes_count']
+        idea.save()
     
 def ideas_api_to_db(**kwargs):
     ideas=get_ideas_from_api(**kwargs)

@@ -21,6 +21,16 @@ class IdeationListView(ListView):
     paginate_by = 100
 
     def get_context_data(self, **kwargs):
+        context = super(IdeationListView, self).get_context_data(**kwargs)
+        context['now'] = timezone.now()
+        return context
+    
+class UserListView(ListView):
+    
+    model = Ideation
+    paginate_by = 100
+
+    def get_context_data(self, **kwargs):
         context = super(ArticleListView, self).get_context_data(**kwargs)
         context['now'] = timezone.now()
         return context

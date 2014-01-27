@@ -1,6 +1,21 @@
 from django.db import models
 
 # Create your models here.
+class VoteCount(models.Model):
+    accessed_at = models.DateTimeField(blank=True, null=True)
+    idea_id = models.IntegerField()
+    votes_count = models.IntegerField(blank=True, null=True)
+    total_votes_needed = models.IntegerField(blank=True, null=True)
+    considered_at = models.DateTimeField(blank=True, null=True)
+    state = models.CharField(max_length=30)
+    
+    def __str__(self):
+        return self.votes_count
+    
+    class Meta:
+        ordering = ['accessed_at']
+        get_latest_by = 'accessed_at'
+
 class Ideation(models.Model):
     app_enabled = models.NullBooleanField(blank=True, null=True)
     category = models.CharField(max_length=30)
@@ -26,14 +41,15 @@ class Ideation(models.Model):
     under_consideration = models.NullBooleanField(blank=True, null=True)
     user_id = models.IntegerField(blank=True, null=True)
     votes_count = models.IntegerField(blank=True, null=True)
+    
+    def get_latest_vote_count(self):
+        VoteCount.objects.filter(idea_id=self.idea_id).latest()
+
+    def get_absolute_url(self):
+        return '/ideas/%s' % self.idea_id
 
     def __str__(self):
         return self.title
-
-class VoteCount(models.Model):
-    accessed_at = models.DateTimeField(blank=True, null=True)
-    idea_id = models.IntegerField()
-    votes_count = models.IntegerField(blank=True, null=True)
-    total_votes_needed = models.IntegerField(blank=True, null=True)
-    considered_at = models.DateTimeField(blank=True, null=True)
-    state = models.CharField(max_length=30)
+    
+    class Meta:
+        ordering=['expires_at']

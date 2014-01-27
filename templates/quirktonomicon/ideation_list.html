@@ -1,11 +1,15 @@
+{% extends "base.html" %}
 <html>
-  <head>
+  {% block head %}
     <title></title>
     <meta content="Quirktonomicon Inventions List">
     <style></style>
-  </head>
-  <body>
-  <h1>Invention ideas</h1>
+  {% endblock head %}  
+  {% block body %}
+  <h2>Invention Ideas</h2>
+  
+  
+  
   <table>
   <tr>
     <th>
@@ -21,13 +25,13 @@
   {% for invention in object_list %}
   <tr>
     <td>
-    {{ invention.title }}
+    <a href={{ invention.get_absolute_url }}>{{ invention.title }}</a>
     </td>
     <td>
-    {{ invention.latest_vote_count }}
+    {{ invention.votes_count }}
     </td>
     <td>
-    {{ invention.title }}
+    {{ invention.expires_at }}
     </td>    
   </tr>
   {% endfor %}
@@ -37,17 +41,16 @@
         <div class="pagination">
             <span class="page-links">
                 {% if page_obj.has_previous %}
-                    <a href="/cars?page={{ page_obj.previous_page_number }}">previous</a>
+                    <a href="/ideas?page={{ page_obj.previous_page_number }}">previous</a>
                 {% endif %}
                 <span class="page-current">
                     Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
                 </span>
                 {% if page_obj.has_next %}
-                    <a href="/cars?page={{ page_obj.next_page_number }}">next</a>
+                    <a href="/ideas?page={{ page_obj.next_page_number }}">next</a>
                 {% endif %}
             </span>
         </div>
     {% endif %}
     
-  </body>
-</html>
+  {% endblock body %}
