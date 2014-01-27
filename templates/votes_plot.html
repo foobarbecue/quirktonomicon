@@ -1,5 +1,6 @@
-<html>
-  <head>
+{% extends "base.html" %}
+
+{% block head %}
     <title>Quirktonomicon votes plot for {{idea.title}} </title>
     <link rel="stylesheet" type="text/css" href="/static/css/jquery.jqplot.min.css" />
     <script language="javascript" type="text/javascript" src="/static/js/jqplot/jquery.min.js"></script>
@@ -9,15 +10,15 @@
         $(function() {
          $.jqplot.config.enablePlugins = true;
          $.jqplot('chartdiv',  [[{{plot_data}}]],
-            {axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer}}}
+            {axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer} } }
          );
          });
     </script>
     
-  </head>
-  <body>
+{% endblock head %}
+
+{% block body %}
   <h2>{{idea.title}}</h2>
-  {{idea.title}} was submitted to Quirky on {{idea.}}
+  {{idea.title}} was submitted to Quirky on {{idea.created_at}}
   <div id="chartdiv" style="height:400px;width:600px;"></div>
-  </body>
-</html>
+{% endblock body %}
