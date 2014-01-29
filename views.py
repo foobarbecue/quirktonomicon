@@ -19,6 +19,10 @@ class IdeationListView(ListView):
     
     model = Ideation
     paginate_by = 100
+    
+    def get_queryset(self):
+        order_by = self.request.GET.get('ordering') or '-created_at'
+        return Ideation.objects.filter(expires_at__gte=timezone.now()).order_by(order_by)
 
     def get_context_data(self, **kwargs):
         context = super(IdeationListView, self).get_context_data(**kwargs)

@@ -9,8 +9,9 @@
   <h2>Invention Ideas</h2>
   
   
-  
+  <div id="idea_list">
   <table>
+  
   <tr>
     <th>
       Title
@@ -20,6 +21,15 @@
     </th>
     <th>
       Expires at
+    </th>    
+    <th>
+      User
+    </th>
+    <th>
+      View on Quirky
+    </th>
+    <th>
+      Vote
     </th>
     </tr>
   {% for invention in object_list %}
@@ -33,9 +43,22 @@
     <td>
     {{ invention.expires_at }}
     </td>    
-  </tr>
+    <td>
+    <a href="http://www.quirky.com/user/{{ invention.user_id }}">{{ invention.user_id }}</a>
+    </td> 
+    <td>
+    <a href="http://www.quirky.com/invent/{{ invention.id }}">View</a>
+    </td> 
+    <td>
+    <a href="javascript:$.post('http://www.quirky.com/api/v2/ideations/{{ invention.id }}/votes')">Vote</a>
+    </td> 
+    </tr>
   {% endfor %}
   </table>
+  </div>
+  <div id="quirky_frame">
+  <iframe src="http://www.quirky.com"></iframe>
+  </div>
   
     {% if is_paginated %}
         <div class="pagination">
