@@ -8,7 +8,24 @@
   {% block body %}
   <h2>Invention Ideas</h2>
   
-  
+  <div id="navigation">
+      {% if is_paginated %}
+        <div class="pagination">
+            <span class="page-links">
+                {% if page_obj.has_previous %}
+                    <a href="/ideas?page={{ page_obj.previous_page_number }}">previous</a>
+                {% endif %}
+                <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="/ideas?page={{ page_obj.next_page_number }}">next</a>
+                {% endif %}
+            </span>
+        </div>
+    {% endif %}
+  </div>
+  <div id="content">
   <div id="idea_list">
   <table>
   
@@ -33,7 +50,7 @@
     </th>
     </tr>
   {% for invention in object_list %}
-  <tr>
+  <tr id="{{ invention.idea_id }}">
     <td>
     <a href={{ invention.get_absolute_url }}>{{ invention.title }}</a>
     </td>
@@ -56,24 +73,12 @@
   {% endfor %}
   </table>
   </div>
-  <div id="quirky_frame">
-  <iframe src="http://www.quirky.com"></iframe>
+  <div id="idea_info">
+  <div id="idea_details">
+  <div id="votes_plot" ></div>
+  <!--
+  <iframe id="quirky_frame" src="http://www.quirky.com"></iframe>
+  -->
   </div>
-  
-    {% if is_paginated %}
-        <div class="pagination">
-            <span class="page-links">
-                {% if page_obj.has_previous %}
-                    <a href="/ideas?page={{ page_obj.previous_page_number }}">previous</a>
-                {% endif %}
-                <span class="page-current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
-                {% if page_obj.has_next %}
-                    <a href="/ideas?page={{ page_obj.next_page_number }}">next</a>
-                {% endif %}
-            </span>
-        </div>
-    {% endif %}
-    
+</div>
   {% endblock body %}
