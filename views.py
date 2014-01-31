@@ -5,6 +5,7 @@ from django.views.generic.list import ListView
 from django.utils import timezone
 from django.http import HttpResponse
 from django.utils import simplejson
+from cacheops import cached
 
 def votes_plot(req, idea_id):
     idea=Ideation.objects.get(idea_id=idea_id)
@@ -13,6 +14,7 @@ def votes_plot(req, idea_id):
     plot_data = ','.join([r'[%.1f,%.1f]' % (dt2jsts(timestamp),value) for timestamp, value in votes])
     return render(req, 'votes_plot.html', {'plot_data':plot_data, 'idea':idea})
 
+@cached(timeout=7200)
 def idea_json(req, idea_id):
     idea=Ideation.objects.get(idea_id=idea_id)
     vote_counts=VoteCount.objects.filter(idea_id=idea_id)
