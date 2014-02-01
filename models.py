@@ -10,7 +10,7 @@ class VoteCount(models.Model):
     state = models.CharField(max_length=30)
     
     def __str__(self):
-        return self.votes_count
+        return unicode(self.votes_count)
     
     class Meta:
         ordering = ['accessed_at']
@@ -41,6 +41,7 @@ class Ideation(models.Model):
     under_consideration = models.NullBooleanField(blank=True, null=True)
     user_id = models.IntegerField(blank=True, null=True)
     votes_count = models.IntegerField(blank=True, null=True)
+    votes_in_latest_day=models.IntegerField(blank=True, null=True)    
     
     def get_latest_vote_count(self):
         VoteCount.objects.filter(idea_id=self.idea_id).latest()

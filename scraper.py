@@ -2,6 +2,7 @@ import requests, datetime, os
 import simplejson as json
 from django import db
 from quirktonomicon.models import Ideation, VoteCount
+from quirktonomicon import stat
 
 def get_ideas_from_api(sort='newest',categories='all',start=0,end=50,per_request=10):
     # Quirky website sends requests with limit=26 but changing the limit parameter
@@ -11,7 +12,6 @@ def get_ideas_from_api(sort='newest',categories='all',start=0,end=50,per_request
         for reqnum in range((end-start)/per_request):
             offset=start+reqnum*per_request
             params={'sort':sort,'offset':offset,'limit':per_request}
-            # 26 seems to be maximum for limit
             print 'offset %s' % offset
             data=requests.get('http://www.quirky.com/api/v2/ideations/filtered_ideations.json',params=params).json()['data']
             ideas+=data['ideations']
@@ -48,6 +48,7 @@ def ideas_api_to_db(**kwargs):
     for idea in ideas:
         write_idea_to_db(idea=idea, accessed_at = datetime.datetime.now())
         db.reset_queries()
+    stats.update()
 
 def scraped_file_to_db(filename):
     basepath=os.getcwd()
