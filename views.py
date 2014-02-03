@@ -35,13 +35,25 @@ class IdeationListView(ListView):
         # we don't show expired ideas so Quirky doesn't get mad
         ideas=Ideation.objects.filter(expires_at__gte=timezone.now())
         
+        # filter for search text
+        search_text=self.request.GET.get('search_text')
+        if search_text and (self.request.GET.get('text_bool') == 'require'):
+            ideas=ideas.filter(title__icontains=search_text)
+        elif search_text:
+            ideas=ideas.exclude(title__icontains=search_text)
+        
+        # filter for caps constraints
+        if self.request.GET.get('allcaps') == 'exclude':
+            ideas=ideas.extra(where=['title != UPPER(title)'])
+        elif self.request.GET.get('allcaps') == 'require':
+            ideas=ideas.extra(where=['title = UPPER(title)'])
+
         # figure out ordering
         order = self.request.GET.get('order_by') or 'created_at'
         if order == 'random':
             order == '?'
         if self.request.GET.get('ascending') == 'false':
-            order = '-' + order
-        
+            order = '-' + order          
         ideas=ideas.order_by(order)
         
         return ideas
