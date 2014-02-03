@@ -32,8 +32,19 @@ class IdeationListView(ListView):
     paginate_by = 100
     
     def get_queryset(self):
-        order_by = self.request.GET.get('ordering') or '-created_at'
-        return Ideation.objects.filter(expires_at__gte=timezone.now()).order_by(order_by)
+        # we don't show expired ideas so Quirky doesn't get mad
+        ideas=Ideation.objects.filter(expires_at__gte=timezone.now())
+        
+        # figure out ordering
+        order = self.request.GET.get('order_by') or 'created_at'
+        if order == 'random':
+            order == '?'
+        if self.request.GET.get('ascending') == 'false':
+            order = '-' + order
+        
+        ideas=ideas.order_by(order)
+        
+        return ideas
 
     def get_context_data(self, **kwargs):
         context = super(IdeationListView, self).get_context_data(**kwargs)
