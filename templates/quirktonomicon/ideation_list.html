@@ -16,7 +16,7 @@
     <table>
     <tr>
     <td>
-        Order by:<br />
+    Order by:<br />
         <div>
             <select name="order_by">
                 <option value="votes_in_latest_day">Votes in last 24h</option>
@@ -34,19 +34,41 @@
     <td>
     Filter:<br />
         <div>
+        Max votes: <input type="number" name="maxvotes" min="0" max="200" size="3"></input><br />
+        Min votes: <input type="number" name="minvotes" min="0" max="200" size="3"></input><br />
         All caps:
             <select name="allcaps">
                 <option value=""></option>
                 <option value="exclude">Exclude</option>
                 <option value="require">Require</option>
             </select><br />
-        Text content:
-            <select name="text_bool">
+        Text:
+            <select id="text_bool" name="text_bool">
                 <option value=""></option>
                 <option value="exclude">Exclude</option>
                 <option value="require">Require</option>
             </select>
-        <input type="text" name="search_text" value=""></input>
+        <input id="search_text" type="text" name="search_text" value=""></input>
+        </div>
+    </td>
+    <td>
+    Go to page:<br />
+        <div>
+        Max votes: <input type="number" name="maxvotes" min="0" max="200" size="3"></input><br />
+        Min votes: <input type="number" name="minvotes" min="0" max="200" size="3"></input><br />
+        All caps:
+            <select name="allcaps">
+                <option value=""></option>
+                <option value="exclude">Exclude</option>
+                <option value="require">Require</option>
+            </select><br />
+        Text:
+            <select id="text_bool" name="text_bool">
+                <option value=""></option>
+                <option value="exclude">Exclude</option>
+                <option value="require">Require</option>
+            </select>
+        <input id="search_text" type="text" name="search_text" value=""></input>
         </div>
     </td>
     <td>

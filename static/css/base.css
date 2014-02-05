@@ -1,0 +1,120 @@
+h1 {
+    color: #A7B67F;
+    border-bottom: thin solid #FF0000;
+    border-top: thin solid #FF0000;
+    font-family: serif;
+    margin: 0px;
+}
+#flavor_text {
+    color: #A7B67F;
+    font-family: monospace;
+    float: right;
+}
+h2 {
+    font-family: monospace;
+}
+body {
+    background: url(/static/img/cutmat.png) no-repeat fixed right top #101010;
+    color: 959595;
+    font-family: arial;
+}
+th {
+    text-align: left;
+}
+a {
+    color: grey;
+}
+a:visited{
+    color: #808090;
+}
+#idea_list{
+    bottom: 0;
+    position: absolute;
+    left: 50%;
+    right: 0px;
+    top: 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+#idea_info {
+    position: absolute;
+    right: 50%;
+    left:0px;
+    border-top: thin #A7B67F solid;
+    border-bottom: thin #A7B67F solid;
+    border-left: thin #A7B67F solid;
+    height:100%;
+}
+#idea_details{
+    height:100%;
+}
+#quirky_frame{
+    bottom: 0px;
+    height: 50%;
+    width: 100%;
+    position: fixed;
+}
+table{
+    border-collapse: collapse;
+}
+td{
+    box-sizing:border-box;
+    padding:0px;
+    margin-top: 1px;
+    margin-bottom: 1px;
+    vertical-align: top;
+    horizontal-align: left;
+}
+#idea_list_table tr.highlighted td{
+    border-top: 1px #A7B67F solid;
+    border-bottom: 1px #A7B67F solid;    
+}
+
+#idea_list_table tr.highlighted>td:last-of-type{
+    border-right: 1px #A7B67F solid;
+}
+#idea_list_table tr:not(.highlighted) td:first-of-type{
+    border-left: 2px #A7B67F solid;
+}
+#idea_list_table tr.highlighted td:last-of-type{
+    border-top: 1px #A7B67F solid;
+    border-bottom: 1px #A7B67F solid;
+    border-left: none;
+}
+#navigation, #idea_list>h2, #idea_list_table th:first-of-type {
+    border-left: 1px #A7B67F solid;
+}
+
+#content {
+    bottom: 0;
+    position: absolute;
+    top: 90px;
+    left:40px;
+    right:40px;
+}
+
+#navigation table{
+    width: 100%
+}
+
+div{
+    margin-left: 20px;
+    margin-top: 8px;
+}
+#idea_list, #idea_info{
+    margin: 5px;
+    height: 95%;
+}
+
+#idea_info{
+    margin-right:0px;
+}
+#idea_list{
+    margin-left:0px;
+}
+#idea_details{
+    margin: 0px;
+}
+#content{
+    margin: 0px;
+}
