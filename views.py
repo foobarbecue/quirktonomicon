@@ -4,8 +4,9 @@ from quirktonomicon.utils import dt2jsts
 from django.views.generic.list import ListView
 from django.utils import timezone
 from django.http import HttpResponse
-from django.utils import simplejson
+import json
 from cacheops import cached
+from django.core import serializers
 
 def votes_plot(req, idea_id):
     idea=Ideation.objects.get(idea_id=idea_id)
@@ -15,7 +16,7 @@ def votes_plot(req, idea_id):
     return render(req, 'votes_plot.html', {'plot_data':plot_data, 'idea':idea})
 
 @cached(timeout=7200)
-def idea_json(req, idea_id):
+def votes_plot_json(req, idea_id):
     idea=Ideation.objects.get(idea_id=idea_id)
     vote_counts=VoteCount.objects.filter(idea_id=idea_id)
     votes=vote_counts.values_list('accessed_at','votes_count')
@@ -23,13 +24,18 @@ def idea_json(req, idea_id):
     plot_data = '['+plot_data+']'
     return HttpResponse(plot_data,content_type="application/json")
 
+@cached(timeout=7200)
+def idea_json(req, idea_id):
+    idea_dict = serializers.serialize('json', Ideation.objects.filter(idea_id=idea_id))
+    return HttpResponse(idea_dict,content_type="application/json")
+
 def get_latest_vote_counts():
     return VoteCount.objects.values('idea_id').annotate(max_vc=Max('votes_count'))
 
 class IdeationListView(ListView):
     
     model = Ideation
-    paginate_by = 100
+    paginate_by = 18
     
     def get_queryset(self):
         # we don't show expired ideas so Quirky doesn't get mad

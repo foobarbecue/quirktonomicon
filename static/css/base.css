@@ -13,7 +13,12 @@ h1 {
 h2 {
     font-family: monospace;
     margin: 0px;
-    padding: 5px
+    padding: 0px;
+}
+h3 {
+    font-family: monospace;
+    margin-bottom: 0px;
+    border-bottom: thin solid;
 }
 form {
     margin: 0;
@@ -22,6 +27,11 @@ body {
     background: url(/static/img/cutmat.png) no-repeat fixed right top #101010;
     color: 959595;
     font-family: arial;
+    font-size: 13;
+}
+tbody {
+    font-family: arial;
+    font-size: 13;
 }
 th {
     text-align: left;
@@ -38,8 +48,8 @@ a:visited{
     left: 50%;
     right: 0px;
     top: 0;
-    overflow-y: scroll;
-    overflow-x: hidden;
+/*    overflow-y: scroll;
+    overflow-x: hidden;*/
 }
 #idea_info {
     position: absolute;
@@ -48,10 +58,6 @@ a:visited{
     border-top: thin #A7B67F solid;
     border-bottom: thin #A7B67F solid;
     border-left: thin #A7B67F solid;
-    height:100%;
-}
-#idea_details{
-    height:100%;
 }
 #quirky_frame{
     bottom: 0px;
@@ -62,14 +68,18 @@ a:visited{
 table{
     border-collapse: collapse;
 }
-td{
+td, th{
     box-sizing:border-box;
-    padding:0px;
+    padding:2px;
     margin-top: 1px;
     margin-bottom: 1px;
     vertical-align: top;
     horizontal-align: left;
 }
+th{
+    border-bottom: thin solid;
+}
+
 #idea_list_table tr.highlighted td{
     border-top: 1px #A7B67F solid;
     border-bottom: 1px #A7B67F solid;    
@@ -106,8 +116,12 @@ div{
     padding-left: 20px;
 /*     padding-top: 8px; */
 }
-#idea_list, #idea_info{
+#idea_list, #idea_info, #missing_features{
+    margin: 0px;
     padding: 0px;
     height: 95%;
 }
 
+#votes_plot{
+    height:100px;
+}

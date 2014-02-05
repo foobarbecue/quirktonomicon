@@ -10,5 +10,6 @@ urlpatterns = patterns('',
     url(r'ideas?/?$', IdeationListView.as_view()),
     url(r'ideas?/(\d*)$', 'quirktonomicon.views.votes_plot'),
     url(r'ideas?_json/(\d*)$', 'quirktonomicon.views.idea_json'),
+    url(r'votes_plot_json/(\d*)$', 'quirktonomicon.views.votes_plot_json'),
     url(r'^admin/', include(admin.site.urls)),
 )

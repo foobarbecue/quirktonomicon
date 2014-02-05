@@ -64,7 +64,9 @@
                     <a href="/ideas?page={{ page_obj.previous_page_number }}">previous</a>
                 {% endif %}
                 <span class="page-current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                    Page {{ page_obj.number }}
+
+                    of {{ page_obj.paginator.num_pages }}.
                 </span>
                 {% if page_obj.has_next %}
                     <a href="/ideas?page={{ page_obj.next_page_number }}">next</a>
@@ -81,10 +83,10 @@
       Title
     </th>
     <th>
-      Vote count
+      Votes
     </th>
     <th>
-      Expires at
+      Expiration
     </th>    
     <th>
       User
@@ -92,9 +94,9 @@
     <th>
       View on Quirky
     </th>
-    <th>
+<!--    <th>
       Vote
-    </th>
+    </th>-->
     </tr>
   {% for invention in object_list %}
   <tr id="{{ invention.idea_id }}">
@@ -113,38 +115,48 @@
     <td>
     <a href="http://www.quirky.com/invent/{{ invention.id }}">View</a>
     </td> 
-    <td>
+<!--    <td>
     <a href="javascript:$.post('http://www.quirky.com/api/v2/ideations/{{ invention.id }}/votes')">Vote</a>
-    </td> 
+    </td>--> 
     </tr>
   {% endfor %}
   </table>
+  <div class='vert_spacer'>
+  </div>
   </div>
   <div id="idea_info">
-  <div id="idea_details">
-  <div class="loading">Loading plot...</div>
-  <div id="votes_plot" ></div>
-  <h2>Quirky's missing features</h2>
-  <div id="missing features">
-  <p>At www.quirky.com/invent, an online community submits thousands of ideas daily in return for a say in the selection and commercialization of these inventions. However, the process is crippled by a few notably absent features on the Quirky website which affect the visibility of invention ideas and thus their fate.</p>
-  <p>Here, we are allowing users to browse the quirky database with more control over results. We have enabled:</p>
-  <ul>
-  <li>A variety of sorting options including viewing "trending" inventions</li>
-  <li>The ability to skip pages of inventions</li>
-  <li>Graphs of invention vote counts over time</li>
-  </ul>
-  <p>Soon, we intend to add:</p>
-  <ul>
-  <li>User flagging of inventions as obvious, impractical, already existant, or entertaining, and filtering by these flags. </li>
-  <li>Quirky-wide statistics</li>
-  <li>Keyboard navigation and single keypress voting</li>
-  <li>More!</li>
-  </ul>  
-  </div>
-  </div>
- 
-  <!--
-  <iframe id="quirky_frame" src="http://www.quirky.com"></iframe>
-  -->
+    <div id="idea_details">
+        <h2 id="title"></h2>
+        <h3>Description</h3>
+        <div id="description"></div>
+        <h3>Problem</h3>
+        <div id="problem"></div>
+        <h3>Solution</h3>
+        <div id="solution"></div>
+    </div> 
+    <div class="loading">Loading...</div>
+    <div id="votes_plot" ></div> 
+        <div id="missing_features">
+            <h2>Quirky's missing features</h2>
+            <div>
+            <p>At www.quirky.com/invent, an online community submits thousands of ideas daily in return for a say in the selection and commercialization of these inventions. However, the process is crippled by a few notably absent features on the Quirky website which affect the visibility of invention ideas and thus their fate.</p>
+            <p>Here, we are allowing users to browse the quirky database with more control over results. We have enabled:</p>
+            <ul>
+            <li>A variety of sorting options including viewing "trending" inventions</li>
+            <li>The ability to skip pages of inventions</li>
+            <li>Graphs of invention vote counts over time</li>
+            </ul>
+            <p>Soon, we intend to add:</p>
+            <ul>
+            <li>User flagging of inventions as obvious, impractical, already existant, or entertaining, and filtering by these flags. </li>
+            <li>Quirky-wide statistics</li>
+            <li>Keyboard navigation and single keypress voting</li>
+            <li>More!</li>
+            </ul>  
+            </div>
+        </div>
+        <!--
+        <iframe id="quirky_frame" src="http://www.quirky.com"></iframe>
+        -->
   </div>
   {% endblock body %}

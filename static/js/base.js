@@ -8,20 +8,31 @@ function vote_on_quirky(idea_id){
     )
 }
 
-function update_idea(data) {
-         $.jqplot.config.enablePlugins = true;
-         if (votes_plot){
-             votes_plot.destroy();
-         }
-         $('.loading').hide();
-         votes_plot = $.jqplot('votes_plot',  [data],
-            {axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer} } }
-         );
+function update_idea_details(data) {
+    data = data[0]['fields']
+    for (var key in data){
+        $('#idea_details #' + key).html(data[key]);
+    }
+    $('#idea_details').fadeIn();
+}
+
+function update_votes_plot(data) {
+    if (votes_plot){
+        votes_plot.destroy();
+    }
+    $('.loading').hide();
+    votes_plot = $.jqplot('votes_plot',  [data],
+    {axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer} } }
+    );
   }
+      
 
 $(function(){
+    $.jqplot.config.enablePlugins = true;
+    votes_ajax_req = false;
+    details_ajax_req = false;
     $('.loading').hide()
-    $('#search_text').hide()
+    $('#idea_details, #search_text, #votes_plot').hide()
     text_bool = $('#text_bool')
     text_bool.change(function(){
         if (text_bool.val()){
@@ -35,22 +46,41 @@ $(function(){
     $('#idea_list_table tr').hover(
         function(evt){
             $( this ).addClass('highlighted');
+            $( this ).siblings().removeClass('highlighted');
+            $('#missing_features').hide();
             $('.loading').fadeIn();
-            votes_ajax_req=$.get(
-                '/idea_json/'+this.id,
+            
+            // Stop all pending ajax requests before making new ones to avoid queue
+            if (votes_ajax_req){
+                votes_ajax_req.abort();
+            }
+            if (details_ajax_req){
+                votes_ajax_req.abort();
+            }            
+            if (votes_plot){
+                votes_plot.destroy();
+            }
+            
+            details_ajax_req=$.get(
+                '/ideas_json/'+this.id,
                 null,
-                update_idea
+                update_idea_details
+                
+            );
+            votes_ajax_req=$.get(
+                '/votes_plot_json/'+this.id,
+                null,
+                update_votes_plot
             );
             //$('#quirky_frame').attr('src', 'http://www.quirky.com/invent/' + this.id);
             
         },
         function(evt){
-            $( this ).removeClass('highlighted');
-            if (votes_ajax_req){
-                votes_ajax_req.abort();
-            }
-            votes_plot.destroy();
-            $('.loading').hide();
+//             $( this ).removeClass('highlighted');
+//             $('.loading').hide();
+//             $('#idea_details').hide();
+//             $('#votes_plot').hide();
+//             $('#missing_features').show();
         })
 })
 
