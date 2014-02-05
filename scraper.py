@@ -1,8 +1,9 @@
 import requests, datetime, os
 import simplejson as json
 from django import db
+from django.core import serializers
 from quirktonomicon.models import Ideation, VoteCount
-from quirktonomicon import stat
+from quirktonomicon import stats
 
 def get_ideas_from_api(sort='newest',categories='all',start=0,end=50,per_request=10):
     # Quirky website sends requests with limit=26 but changing the limit parameter
@@ -16,7 +17,7 @@ def get_ideas_from_api(sort='newest',categories='all',start=0,end=50,per_request
             data=requests.get('http://www.quirky.com/api/v2/ideations/filtered_ideations.json',params=params).json()['data']
             ideas+=data['ideations']
     except:
-        print 'fail on reqnum ' + reqnum
+        print 'fail on reqnum ' + str(reqnum)
     return ideas
 
 def scrape_to_file(start=0,end=10000):
@@ -36,11 +37,13 @@ def write_idea_to_db(idea, accessed_at):
                               'total_votes_needed',
                               'considered_at',
                               'state',]
-        vote_count_par_dict = { key : idea[key] for key in vote_count_params }
+        # need idea as a dict so we serialize it
+        idea_dict = serializers.serialize('python', [idea])[0]
+        vote_count_par_dict = { key : idea_dict['fields'][key] for key in vote_count_params }
         vote_count_par_dict.update({'idea_id':idea_id})
         VoteCount.objects.create(accessed_at = accessed_at, **vote_count_par_dict)
         #Update the current vote count on the Ideation as well. This is redundant, a sort of cache.
-        idea.votes_count=vote_count_params['votes_count']
+        idea.votes_count=vote_count_par_dict['votes_count']
         idea.save()
     
 def ideas_api_to_db(**kwargs):
