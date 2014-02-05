@@ -27,19 +27,17 @@ def scrape_to_file(start=0,end=10000):
 def read_json(ideas_string):
     json.loads()
 
-def write_idea_to_db(idea, accessed_at):
+def write_idea_to_db(idea_dict, accessed_at):
     # idea should be a dict containing one "ideation"
-    idea_id = idea.pop('idea_id')
-    idea, created = Ideation.objects.get_or_create(defaults=idea, idea_id=idea_id)
+    idea_id = idea_dict.pop('idea_id')
+    idea, created = Ideation.objects.get_or_create(defaults=idea_dict, idea_id=idea_id)
     if not created:
         # Already existed, so we don't need to re-save the description etc, instead we make a "vote count"
         vote_count_params  = ['votes_count',
                               'total_votes_needed',
                               'considered_at',
                               'state',]
-        # need idea as a dict so we serialize it
-        idea_dict = serializers.serialize('python', [idea])[0]
-        vote_count_par_dict = { key : idea_dict['fields'][key] for key in vote_count_params }
+        vote_count_par_dict = { key : idea_dict[key] for key in vote_count_params }
         vote_count_par_dict.update({'idea_id':idea_id})
         VoteCount.objects.create(accessed_at = accessed_at, **vote_count_par_dict)
         #Update the current vote count on the Ideation as well. This is redundant, a sort of cache.
@@ -49,7 +47,7 @@ def write_idea_to_db(idea, accessed_at):
 def ideas_api_to_db(**kwargs):
     ideas=get_ideas_from_api(**kwargs)
     for idea in ideas:
-        write_idea_to_db(idea=idea, accessed_at = datetime.datetime.now())
+        write_idea_to_db(idea, accessed_at = datetime.datetime.now())
         db.reset_queries()
     stats.update()
 
