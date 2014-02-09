@@ -16,12 +16,21 @@
     <table>
     <tr>
     <td>
-    Order by:<br />
+        <h3>Order by</h3>
+    </td>
+    <td colspan="2">
+    <h3>Filter</h3>
+    </td>
+    </tr>
+    <tr>
+    <td>
+    
         <div>
             <select name="order_by">
                 <option value="votes_in_latest_day">Votes in last 24h</option>
                 <option value="votes_count">Total votes</option>            
                 <option value="created_at">Date posted</option>
+                <option value="funniest">Funniest</option>
             </select>
         
                 <br />
@@ -32,7 +41,7 @@
         </div>
     </td>
     <td>
-    Filter:<br />
+    
         <div>
         Max votes: <input type="number" name="maxvotes" min="0" max="200" size="3"></input><br />
         Min votes: <input type="number" name="minvotes" min="0" max="200" size="3"></input><br />
@@ -42,12 +51,22 @@
                 <option value="exclude">Exclude</option>
                 <option value="require">Require</option>
             </select><br />
+        </td>
+        <td>
+        <br />
+        Junk:
+            <select id="junk" name="j">
+                <option value=""></option>
+                <option value="exclude">Exclude</option>
+                <option value="require">Require</option>
+            </select><br />
         Text:
             <select id="text_bool" name="text_bool">
                 <option value=""></option>
                 <option value="exclude">Exclude</option>
                 <option value="require">Require</option>
-            </select>
+            </select>            
+            </td>            
         <input id="search_text" type="text" name="search_text" value=""></input>
         </div>
     </td>
@@ -122,6 +141,7 @@
   {% endfor %}
   </table>
   <div class='vert_spacer'>
+test
   </div>
   </div>
   <div id="idea_info">
