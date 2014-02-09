@@ -32,7 +32,7 @@ $(function(){
     votes_ajax_req = false;
     details_ajax_req = false;
     $('.loading').hide()
-    $('#idea_details, #search_text, #votes_plot').hide()
+    $('#idea_details, #search_text').hide()
     text_bool = $('#text_bool')
     text_bool.change(function(){
         if (text_bool.val()){
@@ -43,6 +43,11 @@ $(function(){
         }
     }
     )
+    $('#page_selector').change(
+        function(evt){
+            window.location = window.location + "&page=" + $(this).val()
+        }
+                        )
     $('#idea_list_table tr').hover(
         function(evt){
             $( this ).addClass('highlighted');
