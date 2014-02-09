@@ -46,6 +46,10 @@ class IdeationListView(ListView):
     def get_queryset(self):
         # we don't show expired ideas so Quirky doesn't get mad
         ideas=Ideation.objects.filter(expires_at__gte=timezone.now())
+
+        # filter for vote count
+        vote_bounds=(self.request.GET.get('minvotes'), self.request.GET.get('maxvotes'))
+        ideas=ideas.filter(votes_count__range=vote_bounds)
         
         # filter for search text
         search_text=self.request.GET.get('search_text')
