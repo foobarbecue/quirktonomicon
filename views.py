@@ -15,19 +15,25 @@ def votes_plot(req, idea_id):
     plot_data = ','.join([r'[%.1f,%.1f]' % (dt2jsts(timestamp),value) for timestamp, value in votes])
     return render(req, 'votes_plot.html', {'plot_data':plot_data, 'idea':idea})
 
-@cached(timeout=7200)
-def votes_plot_json(req, idea_id):
-    idea=Ideation.objects.get(idea_id=idea_id)
-    vote_counts=VoteCount.objects.filter(idea_id=idea_id)
-    votes=vote_counts.values_list('accessed_at','votes_count')
-    plot_data = ','.join([r'[%.1f,%.1f]' % (dt2jsts(timestamp),value) for timestamp, value in votes])
-    plot_data = '['+plot_data+']'
-    return HttpResponse(plot_data,content_type="application/json")
 
-@cached(timeout=7200)
+def votes_plot_json(req, idea_id):
+    @cached(timeout=7200)
+    def _votes_plot_json_cacheable(idea_id):
+        idea=Ideation.objects.get(idea_id=idea_id)
+        vote_counts=VoteCount.objects.filter(idea_id=idea_id)
+        votes=vote_counts.values_list('accessed_at','votes_count')
+        plot_data = ','.join([r'[%.1f,%.1f]' % (dt2jsts(timestamp),value) for timestamp, value in votes])
+        plot_data = '['+plot_data+']'
+        return HttpResponse(plot_data,content_type="application/json")
+    return _votes_plot_json_cacheable(idea_id)
+
+
 def idea_json(req, idea_id):
-    idea_dict = serializers.serialize('json', Ideation.objects.filter(idea_id=idea_id))
-    return HttpResponse(idea_dict,content_type="application/json")
+    @cached(timeout=7200)
+    def _idea_json_cacheable(idea_id):    
+        idea_dict = serializers.serialize('json', Ideation.objects.filter(idea_id=idea_id))
+        return HttpResponse(idea_dict,content_type="application/json")
+    return _idea_json_cacheable(idea_id)
 
 def get_latest_vote_counts():
     return VoteCount.objects.values('idea_id').annotate(max_vc=Max('votes_count'))
