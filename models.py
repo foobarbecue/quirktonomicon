@@ -40,8 +40,10 @@ class Ideation(models.Model):
     total_votes_needed = models.IntegerField(blank=True, null=True)
     under_consideration = models.NullBooleanField(blank=True, null=True)
     user_id = models.IntegerField(blank=True, null=True)
-    votes_count = models.IntegerField(blank=True, null=True)
-    votes_in_latest_day=models.IntegerField(blank=True, null=True)    
+    votes_count = models.IntegerField(blank=True, null=True) #not canonical
+    votes_in_latest_day=models.IntegerField(blank=True, null=True) #not canonical
+    funny=models.IntegerField(default=0) #not canonical
+    junk=models.IntegerField(default=0) #not canonical
     
     def get_latest_vote_count(self):
         VoteCount.objects.filter(idea_id=self.idea_id).latest()
@@ -55,6 +57,12 @@ class Ideation(models.Model):
     class Meta:
         ordering=['expires_at']
 
+class Flag(models.Model):
+    ip_address=models.IPAddressField()
+    idea=models.ForeignKey('Ideation')
+    KIND_CHOICES=(('junk','junk'),('funny','funny'))
+    kind=models.CharField(max_length=5,choices=KIND_CHOICES)
+    
 #class VoteDiff(models.Model):
     #calculated_at=
     #start_time=

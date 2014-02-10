@@ -1,5 +1,5 @@
 from django.shortcuts import render, render_to_response
-from quirktonomicon.models import Ideation, VoteCount
+from quirktonomicon.models import Ideation, VoteCount, Flag
 from quirktonomicon.utils import dt2jsts
 from django.views.generic.list import ListView
 from django.utils import timezone
@@ -8,6 +8,7 @@ import json
 from cacheops import cached
 from django.core import serializers
 from collections import Counter
+from django.views.generic.edit import CreateView
 
 def votes_plot(req, idea_id):
     idea=Ideation.objects.get(idea_id=idea_id)
@@ -107,5 +108,19 @@ def cloud(req):
         return render_to_response('cloud.html', {'title_cloud_data':json.dumps(word_freqs)})
         
     return _word_cloud_cached()
+    
+def flag(req):
+    try:
+        idea=Ideation.objects.get(id=req.POST.get())
+        Flag.objects.create(req.POST)
+    except DoesNotExist:
+        return 
+    
+    if req.method == 'POST':
+        # TODO validation here, maybe using modelforms
+        Flag.objects.create(req.POST)
+        
+        flag_counts=idea.flag_set()
+        return HttpResponse()
     
     

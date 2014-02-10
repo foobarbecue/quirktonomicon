@@ -12,5 +12,6 @@ urlpatterns = patterns('',
     url(r'ideas?_json/(\d*)$', 'quirktonomicon.views.idea_json'),
     url(r'cloud/?$', 'quirktonomicon.views.cloud'),
     url(r'votes_plot_json/(\d*)$', 'quirktonomicon.views.votes_plot_json'),
+    url(r'flag?/?$', 'quirktonomicon.views.flag'),
     url(r'^admin/', include(admin.site.urls)),
 )
