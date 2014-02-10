@@ -54,3 +54,8 @@ class Ideation(models.Model):
     
     class Meta:
         ordering=['expires_at']
+
+#class VoteDiff(models.Model):
+    #calculated_at=
+    #start_time=
+    #end_time=

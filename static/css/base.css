@@ -18,8 +18,8 @@ h1 {
     font-family: monospace;
 }
 .canvas_container{
-    width:100%;
-    height:100%;
+    width:90%;
+    height:90%;
 }
 h2 {
     font-family: monospace;
@@ -143,4 +143,10 @@ div{
 }
 .vert_spacer{
     flex: 1;
+}
+
+#word_cloud span:hover{
+    color: white !important;
+    transition-property: color;
+    transition-duration: 1s;
 }

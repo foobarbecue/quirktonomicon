@@ -50,7 +50,8 @@ class IdeationListView(ListView):
 
         # filter for vote count
         vote_bounds=(self.request.GET.get('minvotes'), self.request.GET.get('maxvotes'))
-        ideas=ideas.filter(votes_count__range=vote_bounds)
+        if vote_bounds[0] or vote_bounds[1]:
+            ideas=ideas.filter(votes_count__range=vote_bounds)
         
         # filter for search text
         search_text=self.request.GET.get('search_text')

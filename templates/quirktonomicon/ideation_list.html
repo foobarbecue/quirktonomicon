@@ -98,9 +98,9 @@
     <th>
       View on Quirky
     </th>
-    <th>
+    <th colspan="2">
       Flag as
-    </th>    
+    </th>
 <!--    <th>
       Vote
     </th>-->
@@ -108,7 +108,7 @@
   {% for invention in object_list %}
   <tr id="{{ invention.idea_id }}">
     <td>
-    <a href={{ invention.get_absolute_url }}>{{ invention.title }}</a>
+    <a href={{ invention.get_absolute_url }}>{{ invention.title | safe }}</a>
     </td>
     <td>
     {{ invention.votes_count }}
@@ -125,6 +125,7 @@
     <td>
     <a href="http://www.quirky.com/invent/{{ invention.id }}">Junk</a>
     </td>
+    <td>
     <a href="http://www.quirky.com/invent/{{ invention.id }}">Funny</a>
     </td>    
 <!--    <td>
