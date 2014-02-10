@@ -10,6 +10,17 @@ h1 {
     font-family: monospace;
     float: right;
 }
+#attribution {
+    color: #A7B67F;
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    font-family: monospace;
+}
+.canvas_container{
+    width:100%;
+    height:100%;
+}
 h2 {
     font-family: monospace;
     margin: 0px;

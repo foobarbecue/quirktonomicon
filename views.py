@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from quirktonomicon.models import Ideation, VoteCount
 from quirktonomicon.utils import dt2jsts
 from django.views.generic.list import ListView
@@ -7,6 +7,7 @@ from django.http import HttpResponse
 import json
 from cacheops import cached
 from django.core import serializers
+from collections import Counter
 
 def votes_plot(req, idea_id):
     idea=Ideation.objects.get(idea_id=idea_id)
@@ -89,3 +90,21 @@ class UserListView(ListView):
         context['now'] = timezone.now()
         return context
 
+def cloud(req):
+    #@cached(timeout=7200)
+    def _word_cloud_cached():
+        ignore_words = ['/','with','the','a','if','in','it','of','or','1','-','&amp;','no','','and','for']
+        title_words=' '.join(Ideation.objects.values_list('title',flat=True)).lower().split(' ')
+        word_freq_counter=Counter(title_words)
+        for word in ignore_words:
+            if word in word_freq_counter:
+                del word_freq_counter[word]
+        word_freqs=word_freq_counter.most_common(200)
+        # Using render_to_response rather than render because render
+        # takes the request and that messes up caching. There are other
+        # ways, of course.
+        return render_to_response('cloud.html', {'title_cloud_data':json.dumps(word_freqs)})
+        
+    return _word_cloud_cached()
+    
+    
