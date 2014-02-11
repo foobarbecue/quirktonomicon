@@ -3,7 +3,7 @@ from quirktonomicon.models import Ideation, VoteCount, Flag
 from quirktonomicon.utils import dt2jsts
 from django.views.generic.list import ListView
 from django.utils import timezone
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound, HttpResponseForbidden
 import json
 from cacheops import cached
 from django.core import serializers
@@ -110,17 +110,29 @@ def cloud(req):
     return _word_cloud_cached()
     
 def flag(req):
+    #Parse http data and create a new Flag if this IP has not clicked this before
     try:
-        idea=Ideation.objects.get(id=req.POST.get())
-        Flag.objects.create(req.POST)
-    except DoesNotExist:
-        return 
-    
-    if req.method == 'POST':
+        idea=Ideation.objects.get(id=req.GET.get('idea_id'))
         # TODO validation here, maybe using modelforms
-        Flag.objects.create(req.POST)
-        
-        flag_counts=idea.flag_set()
-        return HttpResponse()
+        # check IP address in request hasn't voted on this before
+        post_dict=dict(req.GET)
+        post_dict={ k : v[0] for k, v in post_dict.iteritems()}
+        post_dict.update({'ip_address':req.META.get('REMOTE_ADDR')})
+        new_flag, created=Flag.objects.get_or_create(**post_dict)    
+    except Ideation.DoesNotExist:
+        return HttpResponseNotFound('You tried to flag an idea that does not exist.')
+
+    # Increment the cache-like counter in the Ideation model
+    if created:
+        if new_flag.kind=='funny':
+            idea.funny+=1
+            idea.save()
+        if new_flag.kind=='junk':
+            idea.junk+=1
+            idea.save()
+    else:
+        return HttpResponseForbidden('You may only flag an idea once.')
+    
+    return HttpResponse(json.dumps({'funny':idea.funny,'junk':idea.junk}))
     
     
