@@ -3,7 +3,7 @@
   {% block head %}
     <title></title>
     <meta content="Quirktonomicon Inventions List">
-    <style></style>
+    <script type='text/javascript' src='/static/js/flag.js' language='javascript'></script>
   {% endblock head %}  
   {% block body %}
   <div id="content">
@@ -55,7 +55,7 @@
         <td>
         <br />
         Junk:
-            <select id="junk" name="j">
+            <select id="junk" name="junk">
                 <option value=""></option>
                 <option value="exclude">Exclude</option>
                 <option value="require">Require</option>
@@ -122,11 +122,19 @@
     <td>
     <a href="http://www.quirky.com/invent/{{ invention.id }}">View</a>
     </td> 
-    <td>
-    <a href="http://www.quirky.com/invent/{{ invention.id }}">Junk</a>
+    <td class="junk flagger">
+    <a href="#">Junk
+    {% if invention.junk %}
+        ({{invention.junk}})
+    {% endif %}
+    </a>
     </td>
-    <td>
-    <a href="http://www.quirky.com/invent/{{ invention.id }}">Funny</a>
+    <td class="funny flagger">
+    <a href="#">Funny 
+    {% if invention.funny %}
+        ({{invention.funny}})
+    {% endif %}
+    </a>
     </td>    
 <!--    <td>
     <a href="javascript:$.post('http://www.quirky.com/api/v2/ideations/{{ invention.id }}/votes')">Vote</a>

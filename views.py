@@ -9,6 +9,7 @@ from cacheops import cached
 from django.core import serializers
 from collections import Counter
 from django.views.generic.edit import CreateView
+from django.views.decorators.csrf import csrf_exempt
 
 def votes_plot(req, idea_id):
     idea=Ideation.objects.get(idea_id=idea_id)
@@ -108,19 +109,22 @@ def cloud(req):
         return render_to_response('cloud.html', {'title_cloud_data':json.dumps(word_freqs)})
         
     return _word_cloud_cached()
-    
+
+@csrf_exempt 
 def flag(req):
     #Parse http data and create a new Flag if this IP has not clicked this before
-    try:
-        idea=Ideation.objects.get(id=req.GET.get('idea_id'))
-        # TODO validation here, maybe using modelforms
-        # check IP address in request hasn't voted on this before
-        post_dict=dict(req.GET)
-        post_dict={ k : v[0] for k, v in post_dict.iteritems()}
-        post_dict.update({'ip_address':req.META.get('REMOTE_ADDR')})
-        new_flag, created=Flag.objects.get_or_create(**post_dict)    
-    except Ideation.DoesNotExist:
-        return HttpResponseNotFound('You tried to flag an idea that does not exist.')
+    #try:
+    idea=Ideation.objects.get(idea_id=req.POST.get('idea_id'))
+    # TODO validation here, maybe using modelforms
+    # check IP address in request hasn't voted on this before
+    post_dict=dict(req.POST)
+    post_dict={k : v[0] for k, v in post_dict.iteritems()}
+    post_dict.update({'ip_address':req.META.get('REMOTE_ADDR'),'idea':idea})
+    post_dict.pop('idea_id')
+    print post_dict
+    new_flag, created=Flag.objects.get_or_create(**post_dict)    
+    #except Ideation.DoesNotExist:
+        #return HttpResponseNotFound('You tried to flag an idea that does not exist.')
 
     # Increment the cache-like counter in the Ideation model
     if created:
