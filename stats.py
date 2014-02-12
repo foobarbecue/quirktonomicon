@@ -4,14 +4,22 @@ from django.db.models import Max, Min
 
 def total_active():
     return Ideation.objects.filter(expires_at__gte=datetime.datetime.now()).count()
-    
-def average_vote_count_daily(datetime, before=True):
+
+def day_range(timestmp, before=True):
     now = datetime.datetime.now()
     if before:
         time_range = (now - timedelta(days=1), now)
     if after:
         time_range = (now, now + timedelta(days=1))
-    VoteCount.objects.filter(accessed_at__range=('2014-01-24','2014-01-25')).aggregate(Avg('votes_count'))
+    return (before,after)
+
+def average_vote_count_daily(time, before=True):
+    mrange=day_range(time=time,before=before)
+    VoteCount.objects.filter(accessed_at__range=(before,after)).aggregate(Avg('votes_count'))
+
+def new_ideas_daily(dtime=datetime.datetime.now(), before=True):
+    mrange=(dtime-datetime.timedelta(days=1),dtime)
+    return Ideation.objects.filter(created_at__range=mrange).count()
 
 def avg_vote_count_at_age(age):
     raise NotImplementedError

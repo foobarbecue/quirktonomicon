@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block body %}
+<div id="word_cloud" class="canvas_container">
+<!--<canvas id="word_cloud">
+</canvas>-->
+</div>
+
+<script src="/static/js/wordcloud2_aar.js" language="javascript" type="text/javascript"></script>
+<script language="javascript">
+function hoverCloudWord(item){
+    alert('test')
+    test=item
+}
+$(function(){
+    word_cloud=$('#word_cloud');
+    word_cloud.attr('height',$('.canvas_container').height() + 'px');
+    word_cloud.attr('width',$('.canvas_container').width() + 'px');
+    WordCloud(word_cloud[0],{
+    list:{{title_cloud_data | safe}},
+    wait:0,
+    weightFactor:0.5,
+    rotateRatio:0.5,
+    fontFamily: 'Times, serif',
+    backgroundColor: 'rgba(0,0,0,0)'
+    })
+    $('#word_cloud').on('wordclouddrawn',function(){
+        $('#word_cloud span').click(
+            function(){
+                window.location='/ideas?text_bool=require&search_text=' + $(this).text()
+                })        
+        })
+
+})
+
+</script>
+{% endblock body %}s

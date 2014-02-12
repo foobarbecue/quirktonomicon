@@ -13,5 +13,6 @@ urlpatterns = patterns('',
     url(r'cloud/?$', 'quirktonomicon.views.cloud'),
     url(r'votes_plot_json/(\d*)$', 'quirktonomicon.views.votes_plot_json'),
     url(r'flag?/?$', 'quirktonomicon.views.flag'),
+    url(r'stats?/?$', 'quirktonomicon.views.stats_view'),
     url(r'^admin/', include(admin.site.urls)),
 )

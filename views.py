@@ -1,6 +1,7 @@
 from django.shortcuts import render, render_to_response
 from quirktonomicon.models import Ideation, VoteCount, Flag
 from quirktonomicon.utils import dt2jsts
+from quirktonomicon import stats
 from django.views.generic.list import ListView
 from django.utils import timezone
 from django.http import HttpResponse, HttpResponseNotFound, HttpResponseForbidden
@@ -139,4 +140,7 @@ def flag(req):
     
     return HttpResponse(json.dumps({'funny':idea.funny,'junk':idea.junk}))
     
-    
+def stats_view(req):
+    #use _view so as not to conflict with module
+    new_ideas_today=stats.new_ideas_daily()
+    return render_to_response('stats.html',{'new_ideas_today':new_ideas_today})
