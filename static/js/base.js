@@ -22,7 +22,22 @@ function update_votes_plot(data) {
     }
     $('.loading').hide();
     votes_plot = $.jqplot('votes_plot',  [data],
-    {axes:{xaxis:{renderer:$.jqplot.DateAxisRenderer} } }
+    {
+        axes: {
+            xaxis:{renderer:$.jqplot.DateAxisRenderer} },
+        grid: {background: 'transparent', gridLineColor: '#222', borderColor: '#222'},
+        seriesColors:['#A7B67F'],
+        seriesDefaults:{showLine:false,
+            markerOptions:{size:2}
+        },
+        legend: {show:true, location:'nw'},
+        series:[
+            {label:'votes on Quirky'},
+            {label:'# times flagged as junk'},
+            {label:'# times flagged as funny'}
+        ]
+        
+    }
     );
   }
       
@@ -33,6 +48,7 @@ $(function(){
     details_ajax_req = false;
     $('.loading').hide()
     $('#idea_details, #search_text').hide()
+    
     text_bool = $('#text_bool')
     text_bool.change(function(){
         if (text_bool.val()){

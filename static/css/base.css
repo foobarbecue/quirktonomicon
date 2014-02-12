@@ -71,6 +71,8 @@ a:visited{
     border-top: thin #A7B67F solid;
     border-bottom: thin #A7B67F solid;
     border-left: thin #A7B67F solid;
+    display: flex;
+    flex-direction: column;
 }
 #quirky_frame{
     bottom: 0px;
@@ -140,13 +142,19 @@ div{
 
 #votes_plot{
     height:100px;
+    flex: 1
 }
 .vert_spacer{
-    flex: 1;
+    flex: 0.8;
 }
 
 #word_cloud span:hover{
     color: white !important;
     transition-property: color;
     transition-duration: 1s;
+}
+
+/*jqplot*/
+.jqplot-table-legend{
+    background-color: transparent !important;
 }
