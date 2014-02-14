@@ -24,6 +24,7 @@ votes_plot = $.jqplot('hourly_stats_plot',  [hourly_plot_data],
             xaxis:{renderer:$.jqplot.DateAxisRenderer} },
         grid: {background: 'black', gridLineColor: '#222', borderColor: '#222'},
         seriesColors:['#A7B67F'],
+	seriesDefaults:{showMarker:false},
         legend: {show:true, location:'nw'},
         series:[
             {label:'new ideas per hour'}

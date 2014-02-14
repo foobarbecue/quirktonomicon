@@ -154,6 +154,10 @@ div{
     transition-duration: 1s;
 }
 
+#word_cloud {
+    padding-top:100px;
+}
+
 /*jqplot*/
 .jqplot-table-legend{
     background-color: transparent !important;
