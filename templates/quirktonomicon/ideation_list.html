@@ -95,9 +95,6 @@
     <th>
       User
     </th>
-    <th>
-      View on Quirky
-    </th>
     <th colspan="2">
       Flag as
     </th>
@@ -108,7 +105,7 @@
   {% for invention in object_list %}
   <tr id="{{ invention.idea_id }}">
     <td>
-    <a href={{ invention.get_absolute_url }}>{{ invention.title | safe }}</a>
+    <a href="http://www.quirky.com/invent/{{ invention.id }}">{{ invention.title | safe }}</a>
     </td>
     <td>
     {{ invention.votes_count }}
@@ -120,17 +117,14 @@
     <a href="http://www.quirky.com/user/{{ invention.user_id }}">{{ invention.user_id }}</a>
     </td> 
     <td>
-    <a href="http://www.quirky.com/invent/{{ invention.id }}">View</a>
-    </td> 
-    <td class="junk flagger">
-    <a href="#">Junk
+    <a class="junk flagger" href="#">Junk
     {% if invention.junk %}
         ({{invention.junk}})
     {% endif %}
     </a>
     </td>
-    <td class="funny flagger">
-    <a href="#">Funny 
+    <td>
+    <a class="funny flagger" href="#">Funny 
     {% if invention.funny %}
         ({{invention.funny}})
     {% endif %}
@@ -194,7 +188,7 @@
             <ul>
             <li>A variety of sorting options including viewing "trending" inventions</li>
             <li>The ability to skip pages of inventions</li>
-            <li>Graphs of invention vote counts over time</li>
+            <li>Graphs of invention vote counts over time (NOTE: this is very slow at the moment. You may need to hover your mouse over the idea in the table for up to a minute to see the plot.)</li>
             </ul>
             <p>Soon, we intend to add:</p>
             <ul>
