@@ -1,5 +1,6 @@
-from quirktonomicon.models import Ideation, VoteCount
+from quirktonomicon.models import Ideation, VoteCount, HourData
 import datetime
+from dateutil.tz import tzutc
 from django.db.models import Max, Min
 
 def total_active():
@@ -21,6 +22,9 @@ def new_ideas_daily(dtime=datetime.datetime.now(), before=True):
     mrange=(dtime-datetime.timedelta(days=1),dtime)
     return Ideation.objects.filter(created_at__range=mrange).count()
 
+def new_ideas_in_period(mrange, before=True):
+    return Ideation.objects.filter(created_at__range=mrange).count()
+
 def avg_vote_count_at_age(age):
     raise NotImplementedError
 
@@ -31,6 +35,20 @@ def total_votes(time):
 
 def votes_submitted(starttime, endtime):
     raise NotImplementedError
+
+def calc_hour_stats(starttime = HourData.objects.latest().start_time, endtime = datetime.datetime.now(tzutc())):
+    curtime = starttime.replace(hour=0, minute=0, second=0, microsecond=0)
+    while curtime < endtime:
+        mrange=(curtime, curtime+datetime.timedelta(hours=1))
+        new_ideas=new_ideas_in_period(mrange)
+        # TODO implement this new_ideas
+        new, created = HourData.objects.get_or_create(
+            start_time=curtime,
+            defaults={'new_ideas':new_ideas}
+            )
+        if created:
+            print new
+        curtime+=datetime.timedelta(hours=1)
 
 def votes_by_idea_in_last_day():
     now=datetime.datetime.now()
@@ -45,6 +63,8 @@ def votes_by_idea_in_last_day():
     return votes_in_day
 
 def update():
+    
+    #copy vote counts from VoteCounts to Ideations
     for k, v in votes_by_idea_in_last_day().iteritems():
         try:
             Ideation.objects.filter(idea_id=k).update(votes_in_latest_day=v)

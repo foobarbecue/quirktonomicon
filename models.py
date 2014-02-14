@@ -62,6 +62,15 @@ class Flag(models.Model):
     idea=models.ForeignKey('Ideation')
     KIND_CHOICES=(('junk','junk'),('funny','funny'))
     kind=models.CharField(max_length=5,choices=KIND_CHOICES)
+
+class HourData(models.Model):
+    start_time=models.DateTimeField()
+    new_votes=models.IntegerField(blank=True, null=True)
+    new_ideas=models.IntegerField(blank=True, null=True)
+    
+    class Meta:
+        ordering = ["start_time"]
+        get_latest_by = "start_time"
     
 #class VoteDiff(models.Model):
     #calculated_at=

@@ -1,4 +1,35 @@
 {% extends "base.html" %}
 {% block body %}
-{{new_ideas_today}}
+<div id="content">
+<h3>Hourly site statistics</h3>
+
+<div>Click and drag to zoom in. Double click to zoom out.</div>
+
+<div id="hourly_stats_plot"></div>
+<br />
+
+<h3>Idea lifecycle statistics</h3>
+
+<div>This should be interesting once I get it done. Check back soon!</div>
+
+</div>
+
+<script language='javascript'>
+$(function(){
+$.jqplot.config.enablePlugins=true;
+hourly_plot_data={{hourly_plot_data}}
+votes_plot = $.jqplot('hourly_stats_plot',  [hourly_plot_data],
+    {
+        axes: {
+            xaxis:{renderer:$.jqplot.DateAxisRenderer} },
+        grid: {background: 'black', gridLineColor: '#222', borderColor: '#222'},
+        seriesColors:['#A7B67F'],
+        legend: {show:true, location:'nw'},
+        series:[
+            {label:'new ideas per hour'}
+        ],
+        cursor:{zoom:true}
+    }
+)})
+</script>
 {% endblock body %}

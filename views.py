@@ -1,5 +1,5 @@
 from django.shortcuts import render, render_to_response
-from quirktonomicon.models import Ideation, VoteCount, Flag
+from quirktonomicon.models import Ideation, VoteCount, Flag, HourData
 from quirktonomicon.utils import dt2jsts
 from quirktonomicon import stats
 from django.views.generic.list import ListView
@@ -141,6 +141,7 @@ def flag(req):
     return HttpResponse(json.dumps({'funny':idea.funny,'junk':idea.junk}))
     
 def stats_view(req):
-    #use _view so as not to conflict with module
-    new_ideas_today=stats.new_ideas_daily()
-    return render_to_response('stats.html',{'new_ideas_today':new_ideas_today})
+    plot_data=HourData.objects.values_list('start_time','new_ideas')
+    plot_data = ','.join([r'[%.1f,%.1f]' % (dt2jsts(timestamp),value) for timestamp, value in plot_data])
+    plot_data = '['+plot_data+']'
+    return render_to_response('stats.html',{'hourly_plot_data':plot_data})
