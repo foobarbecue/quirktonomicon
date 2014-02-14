@@ -38,7 +38,7 @@ def votes_submitted(starttime, endtime):
 
 try:
     default_starttime=HourData.objects.latest().start_time
-else:
+except DoesNotExist:
     default_starttime=Ideation.objects.all()[0].created__at
 def calc_hour_stats(starttime = default_starttime, endtime = datetime.datetime.now(tzutc())):
     curtime = starttime.replace(hour=0, minute=0, second=0, microsecond=0)
