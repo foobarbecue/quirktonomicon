@@ -36,7 +36,11 @@ def total_votes(time):
 def votes_submitted(starttime, endtime):
     raise NotImplementedError
 
-def calc_hour_stats(starttime = HourData.objects.latest().start_time, endtime = datetime.datetime.now(tzutc())):
+try:
+    default_starttime=HourData.objects.latest().start_time
+else:
+    default_starttime=Ideation.objects.all()[0].created__at
+def calc_hour_stats(starttime = default_starttime, endtime = datetime.datetime.now(tzutc())):
     curtime = starttime.replace(hour=0, minute=0, second=0, microsecond=0)
     while curtime < endtime:
         mrange=(curtime, curtime+datetime.timedelta(hours=1))
