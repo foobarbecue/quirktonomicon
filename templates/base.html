@@ -1,12 +1,22 @@
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="/static/css/jquery.jqplot.min.css" />
+    
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-48101411-1', 'quirktonomicon.com');
+        ga('send', 'pageview');
+    </script>
     <script language="javascript" type="text/javascript" src="/static/js/jqplot/jquery.min.js"></script>
     <script language="javascript" type="text/javascript" src="/static/js/jqplot/jquery.jqplot.min.js"></script>
     <script language="javascript" type="text/javascript" src="/static/js/jqplot/plugins/jqplot.dateAxisRenderer.min.js"></script>
     <script language="javascript" type="text/javascript" src="/static/js/jqplot/plugins/jqplot.cursor.min.js"></script>
     <script language="javascript" type="text/javascript" src="/static/js/jqplot/plugins/jqplot.highlighter.min.js"></script>
     <script language="javascript" type="text/javascript" src="/static/js/base.js"></script>
+    <link rel="stylesheet" type="text/css" href="/static/css/jquery.jqplot.min.css" />    
     <link rel="stylesheet" type="text/css" href="/static/css/base.css" />
     
   {% block head %}
