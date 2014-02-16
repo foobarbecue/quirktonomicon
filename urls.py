@@ -7,7 +7,7 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'quirktonomicon.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-    url(r'^$', IdeationListView.as_view()),    
+    url(r'^$', 'quirktonomicon.views.cloud'),    
     url(r'ideas?/?$', IdeationListView.as_view()),
     url(r'ideas?/(\d*)$', 'quirktonomicon.views.votes_plot'),
     url(r'ideas?_json/(\d*)$', 'quirktonomicon.views.idea_json'),

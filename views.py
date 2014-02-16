@@ -73,6 +73,8 @@ class IdeationListView(ListView):
         order = self.request.GET.get('order_by') or 'created_at'
         if order == 'random':
             order == '?'
+        if order == 'votes_in_latest_day':
+            ideas = ideas.filter(votes_in_latest_day__gte=1)
         if self.request.GET.get('ascending') == 'false':
             order = '-' + order          
         ideas=ideas.order_by(order)

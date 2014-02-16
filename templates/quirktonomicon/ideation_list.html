@@ -27,9 +27,10 @@
     
         <div>
             <select name="order_by">
-                <option value="votes_in_latest_day">Trending (votes in last 24h)</option>
+                <option value="votes_in_latest_day">Trending (# votes in last 24h)</option>
                 <option value="votes_count">Total votes</option>            
                 <option value="created_at">Date posted</option>
+                <option value="random">random</option>
                 <option value="funniest">Funniest</option>
             </select>
         
@@ -43,8 +44,8 @@
     <td>
     
         <div>
-        Min votes: <input type="number" name="minvotes" min="0" max="200" size="3"></input><br />
-        Max votes: <input type="number" name="maxvotes" min="0" max="200" size="3"></input><br />
+        Min votes: <input type="number" name="minvotes" min="0" max="200" size="3" value="0"></input><br />
+        Max votes: <input type="number" name="maxvotes" min="0" max="200" size="3" value="200"></input><br />
         All caps:
             <select name="allcaps">
                 <option value=""></option>
@@ -68,9 +69,11 @@
             </select><br />
                     <input id="search_text" type="text" name="search_text" value=""></input>
             </td>            
-    <td>
-            <input type="submit" value="Go"></input>
+    <tr>
+    <td colspan=3>
+            <div><input type="submit" value="Apply filters and ordering"></input></div>
     </td>
+    </tr>
         </div>
     </td>
 
@@ -87,8 +90,11 @@
       Title
     </th>
     <th>
-      Votes
+      Votes (total)
     </th>
+    <th>
+      Votes (last 24h)
+    </th>    
     <th>
       Expiration
     </th>    
@@ -110,6 +116,9 @@
     <td>
     {{ invention.votes_count }}
     </td>
+    <td>
+    {{ invention.votes_in_latest_day }}
+    </td>    
     <td>
     {{ invention.expires_at }}
     </td>    

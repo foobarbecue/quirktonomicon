@@ -6,20 +6,22 @@ h1 {
     margin: 0px;
 }
 #flavor_text {
-    color: #A7B67F;
-    font-family: monospace;
     float: right;
 }
 #attribution {
-    color: #A7B67F;
     position: absolute;
     bottom: 0px;
     right: 0px;
+}
+
+#attribution, #version, #flavor_text{
+    color: #A7B67F;
     font-family: monospace;
 }
+
 .canvas_container{
     width:90%;
-    height:90%;
+    height:70%;
 }
 h2 {
     font-family: monospace;
@@ -152,10 +154,6 @@ div{
     color: white !important;
     transition-property: color;
     transition-duration: 1s;
-}
-
-#word_cloud {
-    padding-top:100px;
 }
 
 /*jqplot*/
