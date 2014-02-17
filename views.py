@@ -50,6 +50,12 @@ class IdeationListView(ListView):
     def get_queryset(self):
         # we don't show expired ideas so Quirky doesn't get mad
         ideas=Ideation.objects.filter(expires_at__gte=timezone.now())
+        
+        # filter for junk
+        if self.request.GET.get('junk') == 'require':
+            ideas=ideas.filter(junk__gte=1)
+        elif self.request.GET.get('junk') == 'exclude':
+            ideas=ideas.exclude(junk__gte=1)
 
         # filter for vote count
         vote_bounds=(self.request.GET.get('minvotes'), self.request.GET.get('maxvotes'))
@@ -72,7 +78,7 @@ class IdeationListView(ListView):
         # figure out ordering
         order = self.request.GET.get('order_by') or 'created_at'
         if order == 'random':
-            order == '?'
+            order = '?'
         if order == 'votes_in_latest_day':
             ideas = ideas.filter(votes_in_latest_day__gte=1)
         if self.request.GET.get('ascending') == 'false':
