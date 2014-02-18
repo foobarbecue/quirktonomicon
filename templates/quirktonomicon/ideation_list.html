@@ -111,7 +111,7 @@
   {% for invention in object_list %}
   <tr id="{{ invention.idea_id }}">
     <td>
-    <a href="http://www.quirky.com/invent/{{ invention.id }}">{{ invention.title | safe }}</a>
+    <a href="http://www.quirky.com/invent/{{ invention.id }}" target="_new">{{ invention.title | safe }}</a>
     </td>
     <td>
     {{ invention.votes_count }}

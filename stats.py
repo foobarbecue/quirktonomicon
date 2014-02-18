@@ -1,6 +1,6 @@
 from quirktonomicon.models import Ideation, VoteCount, HourData
 import datetime
-from dateutil.tz import tzutc
+from django.utils import timezone
 from django.db.models import Max, Min
 
 def total_active():
@@ -40,7 +40,7 @@ try:
     default_starttime=HourData.objects.latest().start_time
 except HourData.DoesNotExist:
     default_starttime=Ideation.objects.all()[0].created_at
-def calc_hour_stats(starttime = default_starttime, endtime = datetime.datetime.now(tzutc())):
+def calc_hour_stats(starttime = default_starttime, endtime = timezone.now()):
     curtime = starttime.replace(hour=0, minute=0, second=0, microsecond=0)
     while curtime < endtime:
         mrange=(curtime, curtime+datetime.timedelta(hours=1))

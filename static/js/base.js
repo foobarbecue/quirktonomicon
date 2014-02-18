@@ -21,12 +21,14 @@ function update_votes_plot(data) {
         votes_plot.destroy();
     }
     $('.loading').hide();
+    $.jqplot.config.enablePlugins=true;
     votes_plot = $.jqplot('votes_plot',  [data],
     {
         axes: {
             xaxis:{renderer:$.jqplot.DateAxisRenderer} },
         grid: {background: 'transparent', gridLineColor: '#222', borderColor: '#222'},
         seriesColors:['#A7B67F'],
+        cursor:{zoom:true},
         seriesDefaults:{showLine:false,
             markerOptions:{size:2}
         },
