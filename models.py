@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class VoteCount(models.Model):
     accessed_at = models.DateTimeField(blank=True, null=True, db_index=True)
-    idea_id = models.IntegerField()
+    idea = models.ForeignKey('Ideation', to_field='idea_id')
     votes_count = models.IntegerField(blank=True, null=True)
     total_votes_needed = models.IntegerField(blank=True, null=True)
     considered_at = models.DateTimeField(blank=True, null=True)
@@ -26,7 +26,7 @@ class Ideation(models.Model):
     expires_at = models.DateTimeField(blank=True, null=True)
     features = models.TextField(blank=True, null=True)
     id = models.IntegerField(primary_key=True)
-    idea_id = models.IntegerField(db_index=True)
+    idea_id = models.IntegerField(db_index=True, unique=True)
     media = models.TextField(blank=True, null=True)
     not_chosen_at = models.DateTimeField(blank=True, null=True)
     patent_id = models.IntegerField(blank=True, null=True)

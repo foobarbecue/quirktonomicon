@@ -46,7 +46,7 @@ def write_idea_to_db(idea_dict, accessed_at):
                               'considered_at',
                               'state',]
         vote_count_par_dict = { key : idea_dict[key] for key in vote_count_params }
-        vote_count_par_dict.update({'idea_id':idea_id})
+        vote_count_par_dict.update({'idea_id':created})
         VoteCount.objects.create(accessed_at = accessed_at, **vote_count_par_dict)
         #Update the current vote count on the Ideation as well. This is redundant, a sort of cache.
         idea.votes_count=vote_count_par_dict['votes_count']

@@ -14,7 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 def votes_plot(req, idea_id):
     idea=Ideation.objects.get(idea_id=idea_id)
-    vote_counts=VoteCount.objects.filter(idea_id=idea_id)
+    vote_counts=idea.vote_count_set.all()
     votes=vote_counts.values_list('accessed_at','votes_count')
     plot_data = ','.join([r'[%.1f,%.1f]' % (dt2jsts(timestamp),value) for timestamp, value in votes])
     return render(req, 'votes_plot.html', {'plot_data':plot_data, 'idea':idea})
@@ -24,7 +24,7 @@ def votes_plot_json(req, idea_id):
     @cached(timeout=7200)
     def _votes_plot_json_cacheable(idea_id):
         idea=Ideation.objects.get(idea_id=idea_id)
-        vote_counts=VoteCount.objects.filter(idea_id=idea_id)
+        vote_counts=idea.vote_count_set.all()
         votes=vote_counts.values_list('accessed_at','votes_count')
         plot_data = ','.join([r'[%.1f,%.1f]' % (dt2jsts(timestamp),value) for timestamp, value in votes])
         plot_data = '['+plot_data+']'
@@ -48,8 +48,14 @@ class IdeationListView(ListView):
     paginate_by = 18
     
     def get_queryset(self):
-        # we don't show expired ideas so Quirky doesn't get mad
-        ideas=Ideation.objects.filter(expires_at__gte=timezone.now())
+        # unless looking for expert review ideas
+        if self.request.GET.get('er') == 'require':
+            ideas=Ideation.objects.filter(state='considered')
+        elif self.request.GET.get('er') == 'exclude':
+            # we don't show expired ideas so Quirky doesn't get mad
+            ideas=Ideation.objects.filter(expires_at__gte=timezone.now()).exclude(state='considered')
+        else:
+            ideas=Ideation.objects.filter(expires_at__gte=timezone.now())
         
         # filter for junk
         if self.request.GET.get('junk') == 'require':

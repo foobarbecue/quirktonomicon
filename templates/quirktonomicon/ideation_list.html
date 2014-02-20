@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 <html>
   {% block head %}
-    <title></title>
     <meta content="Quirktonomicon Inventions List">
     <script type='text/javascript' src='/static/js/flag.js' language='javascript'></script>
   {% endblock head %}  
@@ -31,13 +30,13 @@
                 <option value="votes_count">Total votes</option>            
                 <option value="created_at">Date posted</option>
                 <option value="random">random</option>
-                <option value="funniest">Funniest</option>
+                <option value="funny">Funniest</option>
             </select>
         
                 <br />
         <select name="ascending">
-                <option value="true">Ascending</option>
                 <option value="false">Descending</option>
+                <option value="true">Ascending</option>                
             </select>
         </div>
     </td>
@@ -54,7 +53,13 @@
             </select><br />
         </td>
         <td>
-        <br />
+
+        Expert review:
+            <select id="er" name="er">
+                <option value=""></option>
+                <option value="require">ER Considered</option>
+                <option value="exclude">Not in ER</option>
+            </select><br />        
         Junk:
             <select id="junk" name="junk">
                 <option value=""></option>
@@ -99,6 +104,9 @@
       Expiration
     </th>    
     <th>
+      ER state
+    </th>    
+    <th>
       User
     </th>
     <th colspan="2">
@@ -121,6 +129,9 @@
     </td>    
     <td>
     {{ invention.expires_at }}
+    </td>    
+    <td>
+    {{ invention.state }}
     </td>    
     <td>
     <a href="http://www.quirky.com/user/{{ invention.user_id }}">{{ invention.user_id }}</a>
@@ -169,7 +180,7 @@
                 {% if page_obj.has_next %}
                     <a href="/ideas?page={{ page_obj.next_page_number }}">next></a>
                 {% endif %}
-                
+                of {{ page_obj.num_pages }}
             </span>
         </div>
     {% else %}
